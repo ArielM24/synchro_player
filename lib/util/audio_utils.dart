@@ -20,7 +20,8 @@ Future<Float32List> mp3ToFloat32(String mp3Path) async {
     end: Duration(seconds: 30),
   );
   debugPrint("decoded ${pcmBytes.length} bytes");
-
+   final info = await AudioDecoder.getAudioInfo(mp3Path);
+   debugPrint("info: ${info.sampleRate}");
   // Convierte Int16 → Float32 (normalizado a [-1.0, 1.0])
   final i16 = Int16List.view(
     ByteData.view(
@@ -345,7 +346,7 @@ class MoodAnalyzer {
 
   List<String> getMood(Map<String, double> features) {
     List<String> moods = [];
-    
+
     return moods;
   }
 }

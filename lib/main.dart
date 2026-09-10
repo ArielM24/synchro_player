@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:synchro_player/util/audio_processing/audio_classifier.dart';
+import 'package:synchro_player/util/audio_processing/audio_reader.dart';
 import 'package:synchro_player/util/audio_utils.dart';
 
 void main() {
@@ -84,13 +86,13 @@ class _MyHomePageState extends State<MyHomePage> {
     String song4 = "/storage/emulated/0/Music/Ellipse.mp3";
     String song5 = "/storage/emulated/0/Music/Something In The Way (Remastered 2021).mp3";
     String song6 = "/storage/emulated/0/Music/Something About Us.mp3";
-    final r1 = await classifySong(song1);
-    final r2 = await classifySong(song2);
-    final r3 = await classifySong(song3);
-    final r4 = await classifySong(song4);
-    final r5 = await classifySong(song5);
-    final r6 = await classifySong(song6);
-    debugPrint("$r1 $r2 $r3 $r4 $r5 $r6");
+    final r1 = await AudioReader().readSongFeatures(song1);
+    final r2 = await AudioReader().readSongFeatures(song2);
+    final r3 = await AudioReader().readSongFeatures(song3);
+    final r4 = await AudioReader().readSongFeatures(song4);
+    final r5 = await AudioReader().readSongFeatures(song5);
+    final r6 = await AudioReader().readSongFeatures(song6);
+    debugPrint("${AudioClassifier.classifyMultiLabel(r1.nomalize())} ${AudioClassifier.classifyMultiLabel(r2.nomalize())} ${AudioClassifier.classifyMultiLabel(r3.nomalize())} ${AudioClassifier.classifyMultiLabel(r4.nomalize())} ${AudioClassifier.classifyMultiLabel(r5.nomalize())} ${AudioClassifier.classifyMultiLabel(r6.nomalize())}");
     setState(() {
       stopwatch.stop();
     });
