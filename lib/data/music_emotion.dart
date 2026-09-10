@@ -4,52 +4,52 @@ class MusicEmotion {
   final String name;
   final List<double> featureValues;
   static final List<double> weights = [
-    0.15, // energy
-    0.05, // energyStd
-    0.15, // centroid
-    0.10, // bandwidth
-    0.15, // rolloff
-    0.15, // flatness
-    0.15, // zcr
-    0.10, // flux
+    0.15, // energy     → arousal (activación)
+    0.05, // energyStd  → dinámica/contraste (secundaria)
+    0.15, // centroid   → brillo / valencia
+    0.05, // bandwidth  → redundante con centroid (menos peso)
+    0.10, // rolloff    → redundante con centroid (menos peso)
+    0.20, // flatness   → ruido vs tono (máxima discriminación: miedo vs calma)
+    0.10, // zcr        → contenido percusivo
+    0.20, // flux       → cambio/dinámica (clave para tensión/ira)
   ];
   final double threshold;
   static final List<MusicEmotion> prototypes = [
     MusicEmotion(
-    name: 'Alegría',
-    featureValues: [7.5, 4.0, 6.5, 5.0, 6.5, 1.0, 4.5, 4.5],
-    threshold: 0.70,
-  ),
-  MusicEmotion(
-    name: 'Calma',
-    featureValues: [2.0, 1.0, 2.5, 1.5, 3.0, 0.8, 1.0, 1.0],
-    threshold: 0.70,
-  ),
-  MusicEmotion(
-    name: 'Tristeza',
-    featureValues: [3.0, 1.5, 1.5, 1.5, 2.5, 1.0, 0.8, 0.8],
-    threshold: 0.70,
-  ),
-  MusicEmotion(
-    name: 'Ira',
-    featureValues: [8.5, 7.0, 6.5, 6.5, 7.5, 2.5, 6.5, 8.0],
-    threshold: 0.65,
-  ),
-  MusicEmotion(
-    name: 'Miedo',
-    featureValues: [5.5, 5.5, 4.5, 5.5, 5.5, 4.5, 3.5, 6.0],
-    threshold: 0.65,
-  ),
-  MusicEmotion(
-    name: 'Nostalgia',
-    featureValues: [1.2, 0.6, 1.2, 1.0, 1.5, 0.5, 0.4, 0.4],
-    threshold: 0.72,
-  ),
-  MusicEmotion(
-    name: 'Triunfo',
-    featureValues: [7.5, 4.5, 5.5, 4.5, 6.5, 0.8, 4.0, 4.5],
-    threshold: 0.70,
-  ),
+      name: 'Alegría',
+      featureValues: [0.40, 0.30, 0.35, 0.30, 0.45, 0.15, 0.30, 0.55],
+      threshold: 0.72,
+    ),
+    MusicEmotion(
+      name: 'Calma',
+      featureValues: [0.13, 0.16, 0.10, 0.09, 0.18, 0.25, 0.07, 0.54],
+      threshold: 0.72,
+    ),
+    MusicEmotion(
+      name: 'Tristeza',
+      featureValues: [0.20, 0.15, 0.12, 0.10, 0.22, 0.20, 0.06, 0.45],
+      threshold: 0.72,
+    ),
+    MusicEmotion(
+      name: 'Ira',
+      featureValues: [0.55, 0.70, 0.35, 0.35, 0.50, 0.60, 0.30, 0.85],
+      threshold: 0.68,
+    ),
+    MusicEmotion(
+      name: 'Miedo',
+      featureValues: [0.35, 0.50, 0.25, 0.25, 0.35, 0.55, 0.20, 0.75],
+      threshold: 0.68,
+    ),
+    MusicEmotion(
+      name: 'Nostalgia',
+      featureValues: [0.08, 0.08, 0.06, 0.05, 0.10, 0.15, 0.04, 0.35],
+      threshold: 0.75,
+    ),
+    MusicEmotion(
+      name: 'Triunfo',
+      featureValues: [0.50, 0.35, 0.30, 0.30, 0.45, 0.10, 0.25, 0.60],
+      threshold: 0.72,
+    ),
   ];
   MusicEmotion({
     required this.name,
@@ -70,8 +70,8 @@ class MusicEmotion {
 
   static double distance(List<double> features, MusicEmotion me) {
     double sum = 0;
-    for(int i = 0; i<features.length; i++){
-      sum += pow((features[i]-me.featureValues[i]), 2);
+    for (int i = 0; i < features.length; i++) {
+      sum += pow((features[i] - me.featureValues[i]), 2);
     }
     return sqrt(sum);
   }

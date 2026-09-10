@@ -169,7 +169,8 @@ class FeatureExtractor {
       zcr: median(zcrs),
       flux: median(fluxes),
       minFlux: fluxes.reduce((a,b)=>min(a,b)),
-      maxFlux: fluxes.reduce((a,b)=>max(a,b))
+      maxFlux: fluxes.reduce((a,b)=>max(a,b)),
+      channels: data.channels
     );
   }
 }

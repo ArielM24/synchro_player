@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:synchro_player/data/audio_features.dart';
 import 'package:synchro_player/util/audio_processing/audio_classifier.dart';
 import 'package:synchro_player/util/audio_processing/audio_reader.dart';
 import 'package:synchro_player/util/audio_utils.dart';
@@ -63,6 +64,46 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Stopwatch stopwatch = Stopwatch();
   late Timer _timer;
+  List<String> musicPaths = [
+    "/storage/emulated/0/Music/Ellipse.mp3",
+    "/storage/emulated/0/Music/Something In The Way (Remastered 2021).mp3",
+    "/storage/emulated/0/Music/Last Orders.mp3",
+    "/storage/emulated/0/Music/Calcutta.mp3",
+    "/storage/emulated/0/Music/Bankrupt!.mp3",
+    "/storage/emulated/0/Music/Historical Graffiti.mp3",
+
+    "/storage/emulated/0/Music/Broken.mp3",
+    "/storage/emulated/0/Music/My Way.mp3",
+    "/storage/emulated/0/Music/The Emptiness Machine.mp3",
+    "/storage/emulated/0/Music/In the End.mp3",
+    "/storage/emulated/0/Music/Papercut.mp3",
+    "/storage/emulated/0/Music/Be Quiet and Drive (Far Away).mp3",
+  ];
+
+  List<AudioFeatures> musicFeatures = [];
+
+  List<Map<String, (double, double)>> musicClassification = [];
+
+ _classify() async {
+    musicFeatures = [];
+    musicClassification = [];
+    AudioReader ar = AudioReader();
+    for(int i = 0; i < musicPaths.length; i++){
+      final features = await ar.readSongFeatures(musicPaths[i]);
+      musicFeatures.add(features);
+      final classification = AudioClassifier.classifyMultiLabel(features.nomalize());
+      musicClassification.add(classification);
+    }
+  }
+
+  void _printResults() {
+    for(int i = 0; i < musicPaths.length; i++){
+      debugPrint("${musicPaths[i]}:");
+      debugPrint("${musicFeatures[i]}");
+      debugPrint("${musicFeatures[i].nomalize()}");
+      debugPrint("${musicClassification[i]}");
+    }
+  }
 
   void _incrementCounter() async {
     if(Platform.isAndroid){
@@ -80,22 +121,11 @@ class _MyHomePageState extends State<MyHomePage> {
      _timer = Timer.periodic(Duration(milliseconds: 30), (_) {
       if (stopwatch.isRunning) setState(() {});
     });
-    String song1 = "/storage/emulated/0/Music/Called Out In The Dark.mp3";
-    String song2 = "/storage/emulated/0/Music/Cherry Waves.mp3";
-    String song3 = "/storage/emulated/0/Music/Dive.mp3";
-    String song4 = "/storage/emulated/0/Music/Ellipse.mp3";
-    String song5 = "/storage/emulated/0/Music/Something In The Way (Remastered 2021).mp3";
-    String song6 = "/storage/emulated/0/Music/Something About Us.mp3";
-    final r1 = await AudioReader().readSongFeatures(song1);
-    final r2 = await AudioReader().readSongFeatures(song2);
-    final r3 = await AudioReader().readSongFeatures(song3);
-    final r4 = await AudioReader().readSongFeatures(song4);
-    final r5 = await AudioReader().readSongFeatures(song5);
-    final r6 = await AudioReader().readSongFeatures(song6);
-    debugPrint("${AudioClassifier.classifyMultiLabel(r1.nomalize())} ${AudioClassifier.classifyMultiLabel(r2.nomalize())} ${AudioClassifier.classifyMultiLabel(r3.nomalize())} ${AudioClassifier.classifyMultiLabel(r4.nomalize())} ${AudioClassifier.classifyMultiLabel(r5.nomalize())} ${AudioClassifier.classifyMultiLabel(r6.nomalize())}");
+    await _classify();
     setState(() {
       stopwatch.stop();
     });
+    _printResults();
   }
 
    @override
