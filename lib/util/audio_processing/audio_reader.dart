@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:audio_decoder/audio_decoder.dart';
-import 'package:flutter/material.dart';
 import 'package:synchro_player/data/audio_data.dart';
 import 'package:synchro_player/data/audio_features.dart';
 import 'package:synchro_player/util/audio_processing/feature_extractor.dart';
@@ -18,11 +17,7 @@ class AudioReader {
       end: Duration(minutes: 1, seconds: 15),
     );
 
-    final info = await AudioDecoder.getAudioInfo(mp3Path);
-    debugPrint(
-      'sr: ${info.sampleRate}, canales: ${info.channels}, '
-      'pcmBytes: ${pcmBytes.lengthInBytes}',
-    );
+   final info = await AudioDecoder.getAudioInfo(mp3Path);
 
     // ✅ Conversión manual, sin views ni alineación
     final numInt16 =

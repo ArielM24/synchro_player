@@ -66,8 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
   late Timer _timer;
   List<String> musicPaths = [
     "/storage/emulated/0/Music/Ellipse.mp3",
-    "/storage/emulated/0/Music/Something In The Way (Remastered 2021).mp3",
-    "/storage/emulated/0/Music/Last Orders.mp3",
+   "/storage/emulated/0/Music/Something In The Way (Remastered 2021).mp3",
+   "/storage/emulated/0/Music/Last Orders.mp3",
     "/storage/emulated/0/Music/Calcutta.mp3",
     "/storage/emulated/0/Music/Bankrupt!.mp3",
     "/storage/emulated/0/Music/Historical Graffiti.mp3",
@@ -78,6 +78,13 @@ class _MyHomePageState extends State<MyHomePage> {
     "/storage/emulated/0/Music/In the End.mp3",
     "/storage/emulated/0/Music/Papercut.mp3",
     "/storage/emulated/0/Music/Be Quiet and Drive (Far Away).mp3",
+
+    "/storage/emulated/0/Music/So Much Love.mp3",
+    "/storage/emulated/0/Music/Underdogs.mp3",
+    "/storage/emulated/0/Music/Next Up II.mp3",
+    "/storage/emulated/0/Music/Be Your Man.mp3",
+    "/storage/emulated/0/Music/Something On My Mind.mp3",
+    "/storage/emulated/0/Music/Third Eyed Girl.mp3",
   ];
 
   List<AudioFeatures> musicFeatures = [];

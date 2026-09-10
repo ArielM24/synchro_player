@@ -15,15 +15,17 @@ class AudioFeatures {
   final double maxFlux;
   final double minFlux;
   final int channels;
+  final double consonance;
+  final double mode;
+  final double bpm;
 
-  const AudioFeatures({this.energy = 0, this.energyStd=0, this.centroid=0, this.bandwidth=0, this.rolloff=0, this.flatness=0, this.zcr=0, this.flux=0, this.sampleRate = 0, this.maxFlux=0, this.minFlux=0, this.channels=1});
+  const AudioFeatures({this.energy = 0, this.energyStd=0, this.centroid=0, this.bandwidth=0, this.rolloff=0, this.flatness=0, this.zcr=0, this.flux=0, this.sampleRate = 0, this.maxFlux=0, this.minFlux=0, this.channels=1,  this.consonance=0,  this.mode=0,  this.bpm=0});
 
   bool get isQuiet => energy == 0 && energyStd == 0 && centroid == 0 && bandwidth == 0 && rolloff == 0 && flatness == 0 && zcr == 0 && flux == 0;
 
   // returns an object with the base features normalized [0 - 1]
   AudioFeatures nomalize() {
     final double nyq = sampleRate / 2.0;
-    final double minLog = log1p(minFlux);
     final double logFluxMax = log((1.0 + 50000.0)); // ≈ 10.82
     return AudioFeatures(
       energy: clip(energy, 0, 0.5) / 0.5,
@@ -37,16 +39,16 @@ class AudioFeatures {
       sampleRate: sampleRate,
       minFlux: minFlux,
       maxFlux: maxFlux,
-      channels: channels
+      channels: channels, consonance: (consonance / 0.5).clamp(0.0, 1.0), mode: mode, bpm: ((bpm - 60.0) / 110.0).clamp(0.0, 1.0)
     );
   }
 
   @override
   String toString(){
-    return "[sample rate: $sampleRate, channels: $channels, energy: $energy, energyStd: $energyStd, centroid: $centroid, bandwidth: $bandwidth, rolloff: $rolloff, flatness: $flatness, zcr: $zcr, flux: $flux, minFlux: $minFlux, maxFlux: $maxFlux]";
+    return "[sample rate: $sampleRate, channels: $channels, energy: $energy, energyStd: $energyStd, centroid: $centroid, bandwidth: $bandwidth, rolloff: $rolloff, flatness: $flatness, zcr: $zcr, flux: $flux, minFlux: $minFlux, maxFlux: $maxFlux, consonance: $consonance, mode: $mode, bpm: $bpm]";
   }
 
   List<double> toList() {
-    return [energy, energyStd, centroid, bandwidth, rolloff, flatness, zcr, flux];
+    return [energy, energyStd, centroid, bandwidth, rolloff, flatness, zcr, flux, mode, consonance, bpm];
   }
 }
